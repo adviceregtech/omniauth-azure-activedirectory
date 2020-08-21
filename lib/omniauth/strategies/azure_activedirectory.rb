@@ -288,6 +288,12 @@ module OmniAuth
           end
         return jwt_claims, jwt_header if jwt_claims['nonce'] == read_nonce
         fail JWT::DecodeError, 'Returned nonce did not match.'
+
+      rescue => e
+        # LogHelper.log_exception - is from adv_rt repo added for debugging purposes
+        LogHelper.log_exception("OmniAuth::Strategies::AzureActiveDirectory", "validate_and_parse_id_token",
+          "EXCEPTION ERROR - logging id_token of the user '#{id_token}'", e, nil)
+        raise e
       end
 
       ##
