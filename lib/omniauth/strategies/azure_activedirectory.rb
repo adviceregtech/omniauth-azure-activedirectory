@@ -92,6 +92,7 @@ module OmniAuth
         if error
           # logger.error( "OMNIAUTH-JWT: ERROR in callback_phase - #{request.params['error']} - #{request.params['error_reason'] }")
           Rails.logger.warn  "OMNIAUTH-JWT: ERROR in callback_phase - #{request.params['error']} - #{request.params['error_reason'] }"
+          puts  "OMNIAUTH-JWT: ERROR in callback_phase - #{request.params['error']} - #{request.params['error_reason'] }"
           fail(OAuthError, error)
         end
         # logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[session_state] - #{request.params['session_state']}")
@@ -100,7 +101,7 @@ module OmniAuth
         Rails.logger.warn  "OMNIAUTH-JWT: DEBUG in callback_phase printing out all request params in logger"
 
         request.params.each do |key,value|
-          Rails.logger.warn "Param #{key}: #{value}"
+          Rails.logger.warn "OMNIAUTH-JWT: DEBUG - Param #{key}: #{value}"
         end
         Rails.logger.warn  "OMNIAUTH-JWT: DEBUG in callback_phase request.params[session_state] - #{request.params['session_state']}"
         Rails.logger.warn  "OMNIAUTH-JWT: DEBUG in callback_phase request.params[id_token] - #{request.params['id_token']}"
@@ -116,6 +117,9 @@ module OmniAuth
         # logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[header] - #{@header.inspect}")
         Rails.logger.warn  "OMNIAUTH-JWT: DEBUG in callback_phase request.params[claims] - #{@claims.inspect}"
         Rails.logger.warn  "OMNIAUTH-JWT: DEBUG in callback_phase request.params[header] - #{@header.inspect}"
+
+
+        puts "OMNIAUTH-JWT: DEBUG completed callback_phase - calling super"
         super
       end
 
@@ -329,7 +333,12 @@ module OmniAuth
         Rails.logger.warn  e.message
         Rails.logger.warn  e.backtrace.join("\n")
         Rails.logger.warn  "     ************  EXCEPTION END  *************"
-     
+        puts  "OMNIAUTH-JWT: ERROR in OmniAuth::Strategies::AzureActiveDirectory.validate_and_parse_id_token"
+        puts  "OMNIAUTH-JWT: ERROR in validate_and_parse_id_token logging id_token of the user '#{id_token}'"
+        puts  "     ************ EXCEPTION START *************"
+        puts  e.message
+        puts  e.backtrace.join("\n")
+        puts  "     ************  EXCEPTION END  *************"     
         raise e
       end
 
