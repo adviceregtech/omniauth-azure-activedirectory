@@ -97,6 +97,12 @@ module OmniAuth
         # logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[session_state] - #{request.params['session_state']}")
         # logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[id_token] - #{request.params['id_token']}")
         # logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[code] - #{request.params['code']}")
+        puts "OMNIAUTH-JWT: DEBUG in callback_phase printing out all request params in logger"
+
+        request.params.each do |key,value|
+          Rails.logger.warn "Param #{key}: #{value}"
+        end
+        puts "OMNIAUTH-JWT: DEBUG in callback_phase request.params - #{request.params['session_state']}"
         puts "OMNIAUTH-JWT: DEBUG in callback_phase request.params[session_state] - #{request.params['session_state']}"
         puts "OMNIAUTH-JWT: DEBUG in callback_phase request.params[id_token] - #{request.params['id_token']}"
         puts "OMNIAUTH-JWT: DEBUG in callback_phase request.params[code] - #{request.params['code']}"
