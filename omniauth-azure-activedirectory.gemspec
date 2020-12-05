@@ -14,7 +14,12 @@ Gem::Specification.new do |s|
   s.files           = `git ls-files`.split("\n")
   s.require_paths   = ['lib']
 
-  s.add_runtime_dependency 'jwt', ['< 3.0', '>= 1.5']
+  # 5/12/20 - Mickey
+  # Josh change preiously allowed JTW 2
+  # s.add_runtime_dependency 'jwt', ['< 3.0', '>= 1.5']
+  # merging in https://github.com/CitizenLabDotCo/omniauth-azure-activedirectory.git
+  # and specifying version umber
+  s.add_runtime_dependency 'jwt', '~> 2.0'
   s.add_runtime_dependency 'omniauth', '~> 1.1'
 
   s.add_development_dependency 'rake', '~> 10.4'
