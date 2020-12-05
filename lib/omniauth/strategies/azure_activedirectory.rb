@@ -306,6 +306,7 @@ module OmniAuth
           end
         return jwt_claims, jwt_header if jwt_claims['nonce'] == read_nonce
         fail JWT::DecodeError, 'Returned nonce did not match.'
+
       rescue => e
         # SAMI logging
         # https://adviceregtech.atlassian.net/browse/CLIENTF-2228
