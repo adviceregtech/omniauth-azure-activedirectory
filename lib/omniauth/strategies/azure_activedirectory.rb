@@ -86,12 +86,27 @@ module OmniAuth
       # credentials at the authorization endpoint.
       def callback_phase
         error = request.params['error_reason'] || request.params['error']
-        fail(OAuthError, error) if error
+
+        # SAMI - Adding logging
+        # https://adviceregtech.atlassian.net/browse/CLIENTF-2228
+        if error
+          logger.error( "OMNIAUTH-JWT: ERROR in callback_phase - #{request.params['error']} - #{request.params['error_reason'] }")
+          fail(OAuthError, error)
+        end
+        logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[session_state] - #{request.params['session_state']}")
+        logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[id_token] - #{request.params['id_token']}")
+        logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[code] - #{request.params['code']}")
+
         @session_state = request.params['session_state']
         @id_token = request.params['id_token']
         @code = request.params['code']
+        begin
         @claims, @header = validate_and_parse_id_token(@id_token)
         validate_chash(@code, @claims, @header)
+
+        logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[claims] - #{@claims.inspect}")
+        logger.info( "OMNIAUTH-JWT: DEBUG in callback_phase request.params[header] - #{@header.inspect}")
+
         super
       end
 
@@ -293,9 +308,12 @@ module OmniAuth
         fail JWT::DecodeError, 'Returned nonce did not match.'
 
       rescue => e
-        # LogHelper.log_exception - is from adv_rt repo added for debugging purposes
+        # SAMI logging
+        # https://adviceregtech.atlassian.net/browse/CLIENTF-2228
+        logger.info( "OMNIAUTH-JWT: ERROR in OmniAuth::Strategies::AzureActiveDirectory.validate_and_parse_id_token")
+        logger.info( "OMNIAUTH-JWT: ERROR in validate_and_parse_id_token logging id_token of the user '#{id_token}'")
         LogHelper.log_exception("OmniAuth::Strategies::AzureActiveDirectory", "validate_and_parse_id_token",
-          "EXCEPTION ERROR - logging id_token of the user '#{id_token}'", e, nil)
+                                "EXCEPTION ERROR - logging id_token of the user '#{id_token}'", e, nil)
         raise e
       end
 
