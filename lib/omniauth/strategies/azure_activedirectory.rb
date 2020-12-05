@@ -312,6 +312,8 @@ module OmniAuth
         # https://adviceregtech.atlassian.net/browse/CLIENTF-2228
         logger.info( "OMNIAUTH-JWT: ERROR in OmniAuth::Strategies::AzureActiveDirectory.validate_and_parse_id_token")
         logger.info( "OMNIAUTH-JWT: ERROR in validate_and_parse_id_token logging id_token of the user '#{id_token}'")
+        LogHelper.log_exception("OmniAuth::Strategies::AzureActiveDirectory", "validate_and_parse_id_token",
+                                "EXCEPTION ERROR - logging id_token of the user '#{id_token}'", e, nil)
         raise e
       end
 
