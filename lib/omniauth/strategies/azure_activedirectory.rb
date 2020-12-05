@@ -100,7 +100,6 @@ module OmniAuth
         @session_state = request.params['session_state']
         @id_token = request.params['id_token']
         @code = request.params['code']
-        begin
         @claims, @header = validate_and_parse_id_token(@id_token)
         validate_chash(@code, @claims, @header)
 
